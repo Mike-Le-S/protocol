@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Protocol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0b0e;
+    --card: rgba(255,255,255,0.028);
+    --line: rgba(255,255,255,0.06);
+    --white: #f5f3f0;
+    --soft: rgba(245,243,240,0.6);
+    --muted: rgba(245,243,240,0.25);
+    --lime: #c8fb45;
+    --lime10: rgba(200,251,69,0.1);
+    --sky: #6cb4ff;
+    --sky10: rgba(108,180,255,0.08);
+    --peach: #ffa26b;
+    --peach10: rgba(255,162,107,0.08);
+    --lav: #c9a0ff;
+    --lav10: rgba(201,160,255,0.08);
+    --rose: #ff7b7b;
+    --rose10: rgba(255,123,123,0.08);
+    --off-bg: rgba(255,123,123,0.06);
+    --off-border: rgba(255,123,123,0.12);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { background: var(--bg); color: var(--white); font-family: 'Manrope', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  body { max-width: 460px; margin: 0 auto; padding-bottom: 80px; }
+
+  header { padding: 60px 28px 36px; text-align: center; border-bottom: 1px solid var(--line); }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 500; letter-spacing: 6px; text-transform: uppercase; color: var(--lime); margin-bottom: 12px; }
+  header h1 { font-family: 'Cormorant Garamond', serif; font-size: 40px; font-weight: 600; line-height: 1; letter-spacing: -1px; }
+  .kpis { display: flex; justify-content: center; gap: 28px; margin-top: 26px; }
+  .kpi b { display: block; font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 500; line-height: 1; }
+  .kpi small { font-size: 9px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 5px; display: block; }
+  .v-lime { color: var(--lime); }
+  .v-rose { color: var(--rose); }
+
+  .banner { margin: 16px 28px 0; padding: 14px 16px; border-radius: 12px; font-size: 13px; line-height: 1.6; font-weight: 500; display: none; }
+  .banner.show { display: block; }
+  .banner-off { background: var(--off-bg); border: 1px solid var(--off-border); color: var(--rose); }
+  .banner-info { background: var(--lime10); border: 1px solid rgba(200,251,69,0.12); color: var(--lime); }
+  .banner strong { font-weight: 700; }
+  .banner-sub { font-size: 11px; font-weight: 400; color: var(--soft); margin-top: 4px; }
+
+  .block { padding: 24px 28px; border-bottom: 1px solid var(--line); }
+  .block:last-of-type { border-bottom: none; }
+  .block-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .block-hour { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; color: var(--lime); min-width: 52px; flex-shrink: 0; }
+  .block-title { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.2; }
+  .items { padding-left: 64px; display: grid; gap: 6px; }
+  .item { font-size: 14.5px; font-weight: 400; color: var(--soft); line-height: 1.6; display: flex; align-items: baseline; gap: 8px; }
+  .item::before { content: '·'; color: var(--muted); font-weight: 800; font-size: 18px; line-height: 1; flex-shrink: 0; }
+
+  .item-supp { font-size: 14px; font-weight: 600; color: var(--lime); padding: 8px 12px; background: var(--lime10); border-radius: 10px; margin: 4px 0; line-height: 1.5; }
+  .item-supp.supp-pm { color: var(--sky); background: var(--sky10); }
+  .item-supp.supp-night { color: var(--lav); background: var(--lav10); }
+  .item-supp .supp-detail { font-weight: 400; font-size: 12px; color: var(--soft); display: block; }
+  .supp-hidden { display: none !important; }
+
+  .macros { padding-left: 64px; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 7px; }
+  .t-k { background: var(--lime10); color: var(--lime); }
+  .t-p { background: var(--sky10); color: var(--sky); }
+  .t-g { background: var(--peach10); color: var(--peach); }
+  .t-l { background: var(--lav10); color: var(--lav); }
+
+  .block-simple { padding: 16px 28px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 12px; }
+  .block-simple .block-hour { color: var(--muted); }
+  .block-simple .block-title { font-size: 15px; font-weight: 500; color: var(--soft); }
+
+  .totals { margin: 28px 28px 0; padding: 22px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; gap: 8px; }
+  .tval { font-family: 'JetBrains Mono', monospace; font-size: 19px; font-weight: 500; }
+  .c1 { color: var(--lime); } .c2 { color: var(--sky); } .c3 { color: var(--peach); } .c4 { color: var(--lav); }
+  .tlbl { font-size: 9px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+  .tcheck { font-size: 10px; color: var(--lime); font-weight: 500; margin-top: 2px; }
+
+  .cycle-status { margin: 24px 28px 0; padding: 18px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); }
+  .cycle-title { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .cycle-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; }
+  .cycle-row + .cycle-row { border-top: 1px solid var(--line); }
+  .cycle-name { font-size: 14px; font-weight: 600; }
+  .cycle-badge { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 7px; }
+  .cb-on { background: var(--lime10); color: var(--lime); }
+  .cb-off { background: var(--rose10); color: var(--rose); }
+  .cycle-detail { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  .links { margin: 24px 28px 0; display: grid; gap: 10px; }
+  .link-card { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); text-decoration: none; transition: opacity 0.15s; }
+  .link-card:active { opacity: 0.6; }
+  .link-info h4 { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 2px; }
+  .link-info p { font-size: 12px; color: var(--muted); }
+  .link-price { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; flex-shrink: 0; }
+  .link-card.lc-am .link-price { color: var(--lime); }
+
+  .notes-head { padding: 36px 28px 14px; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); }
+  .note { margin: 0 28px 10px; padding: 14px 16px; border-radius: 12px; background: var(--card); border: 1px solid var(--line); font-size: 13px; line-height: 1.65; color: var(--soft); }
+  .note strong { color: var(--white); font-weight: 700; }
+  .note b { color: var(--lime); font-weight: 600; }
+
+  .settings-toggle { display: block; margin: 32px auto 0; padding: 10px 20px; background: transparent; border: 1px solid var(--line); border-radius: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; cursor: pointer; }
+  .settings-toggle:active { opacity: 0.5; }
+  .settings-panel { margin: 16px 28px 0; padding: 20px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); display: none; }
+  .settings-panel.show { display: block; }
+  .settings-panel label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--soft); }
+  .settings-panel input[type="date"] { width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--white); font-family: 'JetBrains Mono', monospace; font-size: 14px; margin-bottom: 16px; -webkit-appearance: none; }
+  .settings-panel .hint { font-size: 11px; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
+  .btn-save { width: 100%; padding: 12px; border-radius: 10px; border: none; background: var(--lime); color: var(--bg); font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; }
+  .btn-save:active { opacity: 0.7; }
+
+  @supports (padding-top: env(safe-area-inset-top)) {
+    header { padding-top: calc(env(safe-area-inset-top) + 28px); }
+    body { padding-bottom: calc(env(safe-area-inset-bottom) + 60px); }
+  }
+  ::-webkit-scrollbar { width: 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Protocol</div>
+  <h1>Cut · 74 kg</h1>
+  <div class="kpis">
+    <div class="kpi"><b class="v-lime">1968</b><small>Kcal</small></div>
+    <div class="kpi"><b>159g</b><small>Protéines</small></div>
+    <div class="kpi"><b class="v-rose">−505</b><small>Déficit</small></div>
+  </div>
+</header>
+
+<div id="banner-ashwa" class="banner banner-off">
+  ⏸ <strong>Ashwagandha — PAUSE</strong>
+  <div class="banner-sub" id="ashwa-pause-info"></div>
+</div>
+<div id="banner-weekend" class="banner banner-info">
+  🗓 <strong>Week-end</strong> — pas de Boron aujourd'hui
+</div>
+
+<!-- ══════════ 4h30 — RÉVEIL ══════════ -->
+<div class="block">
+  <div class="block-head">
+    <div class="block-hour">4h30</div>
+    <div class="block-title">☕ Pré-workout</div>
+  </div>
+  <div class="items">
+    <div class="item">Café noir</div>
+    <div class="item">1 banane moyenne</div>
+    <div class="item">1 cuillère d'huile d'olive</div>
+    <div id="supp-ashwa" class="item-supp">
+      💊 2× Ashwagandha KSM-66 (600 mg)
+      <span class="supp-detail">nu3 Bio · ↓ cortisol · ↑ testo</span>
+    </div>
+    <div class="item-supp">
+      💊 3× Oméga 3 ESN
+      <span class="supp-detail">Anti-inflammatoire · santé cardio</span>
+    </div>
+    <div class="item-supp">
+      💊 Vitamine C (300 mg)
+      <span class="supp-detail">ESN · Immunité · antioxydant</span>
+    </div>
+  </div>
+  <div class="macros">
+    <span class="tag t-k">225 kcal</span>
+    <span class="tag t-p">1 P</span>
+    <span class="tag t-g">27 G</span>
+    <span class="tag t-l">14 L</span>
+  </div>
+</div>
+
+<!-- ══════════ 5h00 — TRAINING ══════════ -->
+<div class="block-simple">
+  <div class="block-hour">5h00</div>
+  <div class="block-title">🏋️ Entraînement PPL</div>
+</div>
+
+<!-- ══════════ 6h30 — POST-WORKOUT ══════════ -->
+<div class="block">
+  <div class="block-head">
+    <div class="block-hour">~6h30</div>
+    <div class="block-title">🥤 Shake post-workout</div>
+  </div>
+  <div class="items">
+    <div class="item">1 scoop whey ON Gold Standard (30 g)</div>
+    <div class="item">50 g flocons d'avoine en poudre</div>
+    <div class="item">Créatine monohydrate (5 g)</div>
+  </div>
+  <div class="macros">
+    <span class="tag t-k">295 kcal</span>
+    <span class="tag t-p">32 P</span>
+    <span class="tag t-g">35 G</span>
+    <span class="tag t-l">4 L</span>
+  </div>
+</div>
+
+<!-- ══════════ 12h00 — DÉJEUNER ══════════ -->
+<div class="block">
+  <div class="block-head">
+    <div class="block-hour">~12h00</div>
+    <div class="block-title">🍗 Déjeuner</div>
+  </div>
+  <div class="items">
+    <div class="item">200 g blanc de poulet (mariné)</div>
+    <div class="item">Pas de féculent</div>
+    <div class="item">200 g chou-fleur</div>
+  </div>
+  <div class="macros">
+    <span class="tag t-k">450 kcal</span>
+    <span class="tag t-p">62 P</span>
+    <span class="tag t-g">9 G</span>
+    <span class="tag t-l">20 L</span>
+  </div>
+</div>
+
+<!-- ══════════ SNACK ══════════ -->
+<div class="block">
+  <div class="block-head">
+    <div class="block-hour">Flex</div>
+    <div class="block-title">🥚 Snack</div>
+  </div>
+  <div class="items">
+    <div class="item">2 œufs</div>
+  </div>
+  <div class="macros">
+    <span class="tag t-k">130 kcal</span>
+    <span class="tag t-p">11 P</span>
+    <span class="tag t-g">1 G</span>
+    <span class="tag t-l">9 L</span>
+  </div>
+</div>
+
+<!-- ══════════ 19h00 — DÎNER ══════════ -->
+<div class="block">
+  <div class="block-head">
+    <div class="block-hour">~19h00</div>
+    <div class="block-title">🥩 Dîner</div>
+  </div>
+  <div class="items">
+    <div class="item">200 g entrecôte (marinée)</div>
+    <div class="item">60 g riz / pâtes / ebly (cru)</div>
+    <div class="item">150 g légumes variés (courgettes, brocoli…)</div>
+    <div id="supp-boron" class="item-supp supp-pm">
+      💊 1× Boron (6 mg)
+      <span class="supp-detail">NOW Foods · ↑ testo libre · ↓ SHBG</span>
+    </div>
+    <div class="item-supp supp-night">
+      💊 Magnésium Glycinate (400 mg)
+      <span class="supp-detail">↓ Cortisol nocturne · sommeil profond · récup</span>
+    </div>
+  </div>
+  <div class="macros">
+    <span class="tag t-k">868 kcal</span>
+    <span class="tag t-p">53 P</span>
+    <span class="tag t-g">48 G</span>
+    <span class="tag t-l">57 L</span>
+  </div>
+</div>
+
+<!-- ══════════ 22h00 ══════════ -->
+<div class="block-simple" style="border-bottom: none;">
+  <div class="block-hour" style="color: var(--lav);">22h00</div>
+  <div class="block-title">😴 Sommeil · 7-8h min.</div>
+</div>
+
+<!-- ══════════ TOTAUX ══════════ -->
+<div class="totals">
+  <div><div class="tval c1">1968</div><div class="tlbl">Kcal</div></div>
+  <div><div class="tval c2">159g</div><div class="tlbl">Prot</div><div class="tcheck">2.15g/kg ✓</div></div>
+  <div><div class="tval c3">120g</div><div class="tlbl">Gluc</div></div>
+  <div><div class="tval c4">104g</div><div class="tlbl">Lip</div><div class="tcheck">1.4g/kg ✓</div></div>
+</div>
+
+<!-- ══════════ CYCLES ══════════ -->
+<div class="cycle-status">
+  <div class="cycle-title">Statut des cycles</div>
+  <div class="cycle-row">
+    <div>
+      <div class="cycle-name">Ashwagandha</div>
+      <div class="cycle-detail" id="ashwa-cycle-detail">8 sem. ON / 2 sem. OFF</div>
+    </div>
+    <div class="cycle-badge" id="ashwa-badge">—</div>
+  </div>
+  <div class="cycle-row">
+    <div>
+      <div class="cycle-name">Boron</div>
+      <div class="cycle-detail" id="boron-cycle-detail">Lundi → Vendredi</div>
+    </div>
+    <div class="cycle-badge" id="boron-badge">—</div>
+  </div>
+  <div class="cycle-row">
+    <div>
+      <div class="cycle-name">Créatine / Ω3 / Vit C / Mg</div>
+      <div class="cycle-detail">Continu — pas de cycle</div>
+    </div>
+    <div class="cycle-badge cb-on">ON</div>
+  </div>
+</div>
+
+<!-- ══════════ COMMANDER ══════════ -->
+<div class="links">
+  <a href="https://www.fr.nu3.ch/products/nu3-ashwagandha-bio" target="_blank" class="link-card lc-am">
+    <div class="link-info">
+      <h4>Ashwagandha KSM-66 Bio</h4>
+      <p>nu3.ch · 120 gélules · 60 jours</p>
+    </div>
+    <div class="link-price">27.95 CHF →</div>
+  </a>
+</div>
+
+<!-- ══════════ NOTES ══════════ -->
+<div class="notes-head">Notes</div>
+
+<div class="note">
+  📊 <strong>Objectif</strong> — 74 kg / 14.5% BF → <b>70.3 kg / 10% BF en ~10 semaines</b>. 3.7 kg de gras à perdre. Déficit 505 kcal = ~0.4 kg/semaine.
+</div>
+<div class="note">
+  ⚡ <strong>Lipides 104 g/jour (1.4 g/kg)</strong> — largement au-dessus du seuil testo. Pas de risque de chute hormonale.
+</div>
+<div class="note">
+  🔁 <strong>Ashwagandha</strong> — cycle <b>8 sem. ON / 2 sem. OFF</b>. Évite la tolérance et protège la thyroïde.
+</div>
+<div class="note">
+  🧪 <strong>Boron 6 mg</strong> — <b>lun → ven uniquement</b>. Dose efficace ↓ SHBG. Pause week-end.
+</div>
+<div class="note">
+  🧘 <strong>Magnésium Glycinate 400 mg</strong> — ↓ cortisol nocturne, ↑ sommeil profond, ↓ rétention d'eau. Continu.
+</div>
+<div class="note">
+  💪 <strong>Créatine</strong> — <b>5 g/jour continu</b>. Post-workout avec glucides. +1-2 kg rétention intramusculaire (pas sous-cutanée).
+</div>
+<div class="note">
+  💧 <strong>Hydratation</strong> — min. <b>3 L/jour</b>. Créatine + cut + training matinal = besoins augmentés.
+</div>
+
+<!-- ══════════ SETTINGS ══════════ -->
+<button class="settings-toggle" onclick="toggleSettings()">⚙ Réglage du cycle Ashwagandha</button>
+<div id="settings" class="settings-panel">
+  <label for="start-date">Date de début du cycle actuel :</label>
+  <div class="hint">Quand as-tu commencé (ou repris) l'ashwagandha ? La page calcule automatiquement quand faire la pause.</div>
+  <input type="date" id="start-date">
+  <button class="btn-save" onclick="saveStartDate()">Sauvegarder</button>
+</div>
+
+<script>
+(function() {
+  var ASHWA_ON = 56, ASHWA_OFF = 14, CYCLE = 70;
+  var today = new Date();
+  var dow = today.getDay();
+  var isWE = (dow === 0 || dow === 6);
+
+  var boronEl = document.getElementById('supp-boron');
+  var boronBadge = document.getElementById('boron-badge');
+  var bannerWE = document.getElementById('banner-weekend');
+  if (isWE) {
+    boronEl.classList.add('supp-hidden');
+    boronBadge.textContent = 'OFF';
+    boronBadge.className = 'cycle-badge cb-off';
+    bannerWE.classList.add('show');
+    document.getElementById('boron-cycle-detail').textContent = 'Reprise lundi';
+  } else {
+    boronBadge.textContent = 'ON';
+    boronBadge.className = 'cycle-badge cb-on';
+  }
+
+  var stored = localStorage.getItem('ashwa_start');
+  var startInput = document.getElementById('start-date');
+  if (stored) {
+    startInput.value = stored;
+    runAshwa(new Date(stored));
+  } else {
+    var s = today.toISOString().split('T')[0];
+    startInput.value = s;
+    localStorage.setItem('ashwa_start', s);
+    runAshwa(today);
+  }
+
+  function runAshwa(start) {
+    var diff = Math.floor((today - start) / 864e5);
+    var day = ((diff % CYCLE) + CYCLE) % CYCLE;
+    var el = document.getElementById('supp-ashwa');
+    var badge = document.getElementById('ashwa-badge');
+    var banner = document.getElementById('banner-ashwa');
+    var detail = document.getElementById('ashwa-cycle-detail');
+    var info = document.getElementById('ashwa-pause-info');
+    if (day < ASHWA_ON) {
+      var rem = ASHWA_ON - day, wk = Math.floor(day / 7) + 1;
+      badge.textContent = 'ON'; badge.className = 'cycle-badge cb-on';
+      detail.textContent = 'Semaine ' + wk + '/8 · encore ' + rem + 'j avant pause';
+      el.classList.remove('supp-hidden');
+    } else {
+      var rem2 = CYCLE - day, wk2 = Math.floor((day - ASHWA_ON) / 7) + 1;
+      badge.textContent = 'OFF'; badge.className = 'cycle-badge cb-off';
+      detail.textContent = 'Pause sem. ' + wk2 + '/2 · reprise dans ' + rem2 + 'j';
+      el.classList.add('supp-hidden');
+      banner.classList.add('show');
+      info.textContent = 'Pause semaine ' + wk2 + '/2 — reprise dans ' + rem2 + ' jours.';
+    }
+  }
+
+  window.toggleSettings = function() { document.getElementById('settings').classList.toggle('show'); };
+  window.saveStartDate = function() {
+    var v = document.getElementById('start-date').value;
+    if (v) { localStorage.setItem('ashwa_start', v); runAshwa(new Date(v)); document.getElementById('settings').classList.remove('show'); }
+  };
+})();
+</script>
+</body>
+</html>

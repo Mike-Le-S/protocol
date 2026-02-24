@@ -944,12 +944,6 @@
   var isNizoral = (dow === 1 || dow === 3 || dow === 5);
   var isSunday = (dow === 0);
   var isMonday = (dow === 1);
-  // Minoxidil: NOT on Sunday evening (needling day), NOT on Monday evening (24h post)
-  // Actually per protocol: no minox Sunday night (needling), no minox Monday morning, resume Monday evening
-  // So Monday evening = ON. Sunday evening = OFF (needling night).
-  // The table says Monday soir = Non (24h post-needling). Let me re-read:
-  // "PAS de minoxidil ce soir-là" (dimanche) + "PAS de minoxidil le lundi matin non plus" + "Reprendre le minoxidil lundi soir"
-  // But the table says Lundi Minoxidil soir = Non. So Monday evening is also off per the table.
   var minoxTonight = !(isSunday || isMonday);
 
   var bannerHair = document.getElementById('banner-hair-day');
@@ -998,7 +992,6 @@
   todayCells.forEach(function(cell) { cell.classList.add('today-col'); });
 
   // ══════════ CHEVEUX — NOW CARD ══════════
-  var hairHour = new Date().getHours();
 
   function renderNowHair() {
     var title = document.getElementById('now-hair-title');
@@ -1007,14 +1000,14 @@
     var html = '';
     var slotId = '';
 
-    if (hairHour >= 4 && hairHour <= 4) {
+    if (hour >= 4 && hour <= 4) {
       // Morning: rosemary massage
       slotId = 'rosemary';
       title.textContent = 'Massage romarin';
       html = '<div class="now-item">3-5 gouttes huile de romarin dans huile de jojoba</div>';
       html += '<div class="now-item">Masser 5 min sur les zones de recul</div>';
       next.textContent = 'Prochain : shampoing à la douche du fit';
-    } else if (hairHour >= 5 && hairHour <= 7) {
+    } else if (hour >= 5 && hour <= 7) {
       // Gym shower
       slotId = 'shower';
       if (isNizoral) {
@@ -1025,7 +1018,7 @@
         html = '<div class="now-item">Sans SLS — Ducray Anaphase+ ou Bioderma Nodé</div>';
       }
       next.textContent = minoxTonight ? 'Prochain : minoxidil ce soir' : 'Pas de minoxidil ce soir';
-    } else if (hairHour >= 8 && hairHour <= 20) {
+    } else if (hour >= 8 && hour <= 20) {
       // Idle
       slotId = 'idle';
       title.textContent = 'Rien pour le moment';

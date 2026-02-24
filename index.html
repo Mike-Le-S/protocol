@@ -589,38 +589,52 @@
   </div>
 </div>
 
-<!-- ══════════ APRÈS DOUCHE ══════════ -->
-<div class="block">
+<!-- ══════════ MASSAGE ROMARIN ══════════ -->
+<div class="collapsible-head" data-slot="rosemary">
   <div class="block-head">
     <div class="block-hour">Post</div>
     <div class="block-title">Massage cuir chevelu</div>
   </div>
-  <div class="items">
+  <span class="collapsible-chevron">›</span>
+</div>
+<div class="collapsible-body" data-slot="rosemary">
+  <div class="collapsible-body-inner">
+  <div class="items" style="padding-left: 0;">
     <div class="item">Cheveux secs · 5 min</div>
     <div class="item">3-5 gouttes huile de romarin dans huile de jojoba</div>
     <div class="item">Masser sur les zones de recul</div>
     <div class="item" style="color: var(--muted); font-size: 13px;">Alternative : faire avant la douche pour rincer après</div>
   </div>
+  </div>
 </div>
 
 <!-- ══════════ SOIR ══════════ -->
-<div class="block">
+<div class="collapsible-head" data-slot="minoxidil">
   <div class="block-head">
     <div class="block-hour" style="color: var(--lav);">Soir</div>
     <div class="block-title">Minoxidil 5%</div>
   </div>
-  <div class="items" id="hair-minox-items">
+  <span class="collapsible-chevron">›</span>
+</div>
+<div class="collapsible-body" data-slot="minoxidil">
+  <div class="collapsible-body-inner">
+  <div class="items" style="padding-left: 0;" id="hair-minox-items">
     <div class="item">Chargement…</div>
+  </div>
   </div>
 </div>
 
 <!-- ══════════ DIMANCHE SOIR — MICRONEEDLING ══════════ -->
-<div class="block" id="hair-needling-block">
+<div class="collapsible-head" data-slot="needling">
   <div class="block-head">
     <div class="block-hour" style="color: var(--lav);">Dim.</div>
     <div class="block-title">Microneedling</div>
   </div>
-  <div class="items-flat" style="padding-left: 64px;">
+  <span class="collapsible-chevron">›</span>
+</div>
+<div class="collapsible-body" data-slot="needling" id="hair-needling-block">
+  <div class="collapsible-body-inner">
+  <div class="items-flat" style="padding-left: 0;">
     <div class="item">Cuir chevelu propre et sec</div>
     <div class="item">Stériliser dermaroller 1,0 mm à l'alcool isopropylique 70%</div>
     <div class="item">Rouler pression légère sur zones de recul</div>
@@ -630,6 +644,7 @@
     <div class="item item-warn"><strong>PAS</strong> de minoxidil ce soir-là</div>
     <div class="item item-warn"><strong>PAS</strong> de minoxidil le lundi matin non plus</div>
     <div class="item">Reprendre le minoxidil lundi soir (24h après)</div>
+  </div>
   </div>
 </div>
 
@@ -1057,6 +1072,24 @@
   }
 
   renderNowHair();
+
+  // ══════════ CHEVEUX — COLLAPSIBLE TOGGLE ══════════
+  document.querySelectorAll('#tab-cheveux .collapsible-head').forEach(function(head) {
+    head.addEventListener('click', function() {
+      var slot = this.getAttribute('data-slot');
+      var body = document.querySelector('#tab-cheveux .collapsible-body[data-slot="' + slot + '"]');
+      this.classList.toggle('open');
+      if (body) body.classList.toggle('open');
+    });
+  });
+
+  // Auto-open current hair slot
+  if (window.currentHairSlot) {
+    var curHairHead = document.querySelector('#tab-cheveux .collapsible-head[data-slot="' + window.currentHairSlot + '"]');
+    var curHairBody = document.querySelector('#tab-cheveux .collapsible-body[data-slot="' + window.currentHairSlot + '"]');
+    if (curHairHead) curHairHead.classList.add('open');
+    if (curHairBody) curHairBody.classList.add('open');
+  }
 })();
 </script>
 </body>

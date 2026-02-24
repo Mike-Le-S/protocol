@@ -665,41 +665,40 @@
   <div class="now-next" id="now-hair-next"></div>
 </div>
 
-<!-- ══════════ 4h30 — MASSAGE ROMARIN ══════════ -->
-<div class="collapsible-head" data-slot="rosemary">
-  <div class="block-head">
-    <div class="block-hour">4h30</div>
-    <div class="block-title">Massage romarin</div>
-  </div>
-  <span class="collapsible-chevron">›</span>
-</div>
-<div class="collapsible-body" data-slot="rosemary">
-  <div class="collapsible-body-inner">
-  <div class="items" style="padding-left: 0;">
-    <div class="item">3-5 gouttes huile de romarin dans huile de jojoba</div>
-    <div class="item">Masser 5 min sur les zones de recul</div>
-    <div class="item" style="color: var(--muted); font-size: 13px;">L'huile reste pendant l'entraînement (~1h30 de contact)</div>
-  </div>
-  </div>
-</div>
-
-<!-- ══════════ ~7h00 — DOUCHE AU FIT ══════════ -->
+<!-- ══════════ ~7h00 — DUCRAY ANAPHASE+ ══════════ -->
 <div class="collapsible-head" data-slot="shower">
   <div class="block-head">
     <div class="block-hour">~7h00</div>
-    <div class="block-title" id="hair-shampoo-title">Shampoing</div>
+    <div class="block-title">Ducray Anaphase+</div>
   </div>
   <span class="collapsible-chevron">›</span>
 </div>
 <div class="collapsible-body" data-slot="shower">
   <div class="collapsible-body-inner">
   <div class="items" style="padding-left: 0;">
-    <div class="item" id="hair-shampoo-desc">Chargement…</div>
+    <div class="item">Shampoing doux sans SLS — après l'entraînement</div>
+    <div class="item">Tous les matins</div>
   </div>
   </div>
 </div>
 
-<!-- ══════════ SOIR ══════════ -->
+<!-- ══════════ SOIR — NIZORAL 2% ══════════ -->
+<div class="collapsible-head" data-slot="nizoral">
+  <div class="block-head">
+    <div class="block-hour" style="color: var(--lav);">Soir</div>
+    <div class="block-title">Nizoral 2% · Mar/Jeu/Sam</div>
+  </div>
+  <span class="collapsible-chevron">›</span>
+</div>
+<div class="collapsible-body" data-slot="nizoral">
+  <div class="collapsible-body-inner">
+  <div class="items" style="padding-left: 0;" id="hair-nizoral-items">
+    <div class="item">Chargement…</div>
+  </div>
+  </div>
+</div>
+
+<!-- ══════════ SOIR — MINOXIDIL 5% ══════════ -->
 <div class="collapsible-head" data-slot="minoxidil">
   <div class="block-head">
     <div class="block-hour" style="color: var(--lav);">Soir</div>
@@ -732,9 +731,8 @@
     <div class="item">4-6 passes par direction : horizontale, verticale, diagonale gauche, diagonale droite</div>
     <div class="item">Viser rougeur uniforme, pas de saignement franc</div>
     <div class="item">Stériliser à nouveau le roller, ranger dans son étui</div>
-    <div class="item item-warn"><strong>PAS</strong> de minoxidil ce soir-là</div>
-    <div class="item item-warn"><strong>PAS</strong> de minoxidil le lundi matin non plus</div>
-    <div class="item">Reprendre le minoxidil lundi soir (24h après)</div>
+    <div class="item item-warn"><strong>PAS</strong> de minoxidil ce soir</div>
+    <div class="item">Reprendre le minoxidil demain soir (lundi)</div>
   </div>
   </div>
 </div>
@@ -757,17 +755,7 @@
     </thead>
     <tbody>
       <tr>
-        <td>Shampoing</td>
-        <td data-dow="1" class="cell-special">Nizoral</td>
-        <td data-dow="2">Doux</td>
-        <td data-dow="3" class="cell-special">Nizoral</td>
-        <td data-dow="4">Doux</td>
-        <td data-dow="5" class="cell-special">Nizoral</td>
-        <td data-dow="6">Doux</td>
-        <td data-dow="0">Doux</td>
-      </tr>
-      <tr>
-        <td>Romarin</td>
+        <td>Ducray (matin)</td>
         <td data-dow="1" class="cell-on">Oui</td>
         <td data-dow="2" class="cell-on">Oui</td>
         <td data-dow="3" class="cell-on">Oui</td>
@@ -777,8 +765,18 @@
         <td data-dow="0" class="cell-on">Oui</td>
       </tr>
       <tr>
-        <td>Minoxidil</td>
-        <td data-dow="1" class="cell-off">Non</td>
+        <td>Nizoral 2% (soir)</td>
+        <td data-dow="1">—</td>
+        <td data-dow="2" class="cell-special">Oui</td>
+        <td data-dow="3">—</td>
+        <td data-dow="4" class="cell-special">Oui</td>
+        <td data-dow="5">—</td>
+        <td data-dow="6" class="cell-special">Oui</td>
+        <td data-dow="0">—</td>
+      </tr>
+      <tr>
+        <td>Minoxidil (soir)</td>
+        <td data-dow="1" class="cell-on">Oui</td>
         <td data-dow="2" class="cell-on">Oui</td>
         <td data-dow="3" class="cell-on">Oui</td>
         <td data-dow="4" class="cell-on">Oui</td>
@@ -1035,50 +1033,48 @@
 
   // ══════════ CHEVEUX — DYNAMIC DAY ══════════
   var dayNames = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
-  var isNizoral = (dow === 1 || dow === 3 || dow === 5);
+  var isNizoralEvening = (dow === 2 || dow === 4 || dow === 6); // Mar/Jeu/Sam soir
   var isSunday = (dow === 0);
-  var isMonday = (dow === 1);
-  var minoxTonight = !(isSunday || isMonday);
+  var minoxTonight = !isSunday; // Tous les soirs sauf dimanche
 
   var bannerHair = document.getElementById('banner-hair-day');
-  var shamTitle = document.getElementById('hair-shampoo-title');
-  var shamDesc = document.getElementById('hair-shampoo-desc');
   var minoxItems = document.getElementById('hair-minox-items');
+  var nizoralItems = document.getElementById('hair-nizoral-items');
 
   // Banner
   var bannerParts = [];
-  if (isNizoral) bannerParts.push('Nizoral 1%');
-  if (isSunday) bannerParts.push('Microneedling ce soir');
-  if (!minoxTonight) bannerParts.push('Pas de minoxidil ce soir');
+  if (isNizoralEvening) bannerParts.push('Nizoral 2% ce soir');
+  if (isSunday) bannerParts.push('Microneedling ce soir · pas de minoxidil');
   if (bannerParts.length > 0) {
     bannerHair.innerHTML = '<strong>' + dayNames[dow] + '</strong> — ' + bannerParts.join(' · ');
     bannerHair.classList.add('show');
   }
 
-  // Shampoo
-  if (isNizoral) {
-    shamTitle.textContent = 'Nizoral 1%';
-    shamDesc.textContent = 'Laisser poser 3-5 min, rincer.';
-  } else {
-    shamTitle.textContent = 'Shampoing doux';
-    shamDesc.textContent = 'Sans SLS — Ducray Anaphase+ ou Bioderma Nodé.';
+  // Nizoral evening section
+  if (nizoralItems) {
+    if (isNizoralEvening) {
+      nizoralItems.innerHTML =
+        '<div class="item">Douche avec Nizoral 2% — poser 3-5 min, rincer</div>' +
+        '<div class="item">Sécher les cheveux</div>' +
+        '<div class="item">Puis appliquer le minoxidil</div>';
+    } else {
+      var nextNiz = dow < 2 ? 'mardi' : dow < 4 ? 'jeudi' : dow < 6 ? 'samedi' : 'mardi';
+      nizoralItems.innerHTML =
+        '<div class="item" style="color: var(--muted);">Pas de Nizoral aujourd\'hui — prochain : ' + nextNiz + ' soir</div>';
+    }
   }
 
   // Minoxidil
   if (minoxTonight) {
     minoxItems.innerHTML =
       '<div class="item">Mousse Regaine 5% sur golfes et zones de recul</div>' +
-      '<div class="item">1 noisette, masser 1 min pour répartir</div>' +
+      '<div class="item">Cheveux secs · 1 noisette · masser 1 min</div>' +
       '<div class="item">Laisser sécher 10-15 min · ne pas rincer · dormir avec</div>';
-  } else if (isSunday) {
-    minoxItems.innerHTML =
-      '<div class="item item-warn"><strong>PAS de minoxidil ce soir</strong> — jour de microneedling</div>' +
-      '<div class="item">Reprendre lundi soir (24h après)</div>';
   } else {
-    // Monday
+    // Sunday
     minoxItems.innerHTML =
-      '<div class="item item-warn"><strong>PAS de minoxidil ce soir</strong> — 24h post-needling</div>' +
-      '<div class="item">Reprendre demain soir (mardi)</div>';
+      '<div class="item item-warn"><strong>PAS</strong> de minoxidil ce soir — jour de microneedling</div>' +
+      '<div class="item">Reprendre demain soir (lundi)</div>';
   }
 
   // Highlight today in weekly table
@@ -1094,35 +1090,20 @@
     var html = '';
     var slotId = '';
 
-    if (hour >= 4 && hour <= 4) {
-      // Morning: rosemary massage
-      slotId = 'rosemary';
-      title.textContent = 'Massage romarin';
-      html = '<div class="now-item">3-5 gouttes huile de romarin dans huile de jojoba</div>';
-      html += '<div class="now-item">Masser 5 min sur les zones de recul</div>';
-      next.textContent = 'Prochain : shampoing à la douche du fit';
-    } else if (hour >= 5 && hour <= 7) {
-      // Gym shower
+    var eveningInfo = isSunday ? 'Microneedling (pas de minoxidil)' :
+      isNizoralEvening ? 'Nizoral 2% + Minoxidil' : 'Minoxidil';
+
+    if (hour >= 4 && hour <= 7) {
+      // Morning: Ducray shower after training
       slotId = 'shower';
-      if (isNizoral) {
-        title.textContent = 'Nizoral 1%';
-        html = '<div class="now-item">Laisser poser 3-5 min, rincer</div>';
-      } else {
-        title.textContent = 'Shampoing doux';
-        html = '<div class="now-item">Sans SLS — Ducray Anaphase+ ou Bioderma Nodé</div>';
-      }
-      next.textContent = minoxTonight ? 'Prochain : minoxidil ce soir' : 'Pas de minoxidil ce soir';
+      title.textContent = 'Ducray Anaphase+';
+      html = '<div class="now-item">Shampoing doux sans SLS — après l\'entraînement</div>';
+      next.textContent = 'Ce soir : ' + eveningInfo;
     } else if (hour >= 8 && hour <= 20) {
       // Idle
       slotId = 'idle';
       title.textContent = 'Rien pour le moment';
-      if (minoxTonight) {
-        next.textContent = 'Prochaine étape : minoxidil ce soir';
-      } else if (isSunday) {
-        next.textContent = 'Ce soir : microneedling (pas de minoxidil)';
-      } else {
-        next.textContent = 'Pas de minoxidil ce soir — 24h post-needling';
-      }
+      next.textContent = 'Ce soir : ' + eveningInfo;
     } else {
       // Evening / night (21-3)
       if (isSunday) {
@@ -1134,20 +1115,23 @@
         html += '<div class="now-item">Viser rougeur uniforme, pas de saignement</div>';
         html += '<div class="now-item">Stériliser à nouveau, ranger</div>';
         html += '<div class="now-item now-item-warn">PAS de minoxidil ce soir</div>';
-        next.textContent = 'Reprendre le minoxidil mardi soir';
-      } else if (minoxTonight) {
-        slotId = 'minoxidil';
-        title.textContent = 'Minoxidil 5%';
-        html = '<div class="now-item">Mousse Regaine sur golfes et zones de recul</div>';
-        html += '<div class="now-item">1 noisette, masser 1 min</div>';
+        next.textContent = 'Reprendre le minoxidil demain soir (lundi)';
+      } else if (isNizoralEvening) {
+        slotId = 'nizoral';
+        title.textContent = 'Nizoral 2% + Minoxidil';
+        html = '<div class="now-item">Douche Nizoral 2% — poser 3-5 min, rincer</div>';
+        html += '<div class="now-item">Sécher les cheveux</div>';
+        html += '<div class="now-item now-item-supp">Puis : Minoxidil 5% mousse sur golfes</div>';
+        html += '<div class="now-item">Cheveux secs · 1 noisette · masser 1 min</div>';
         html += '<div class="now-item">Sécher 10-15 min · ne pas rincer · dormir avec</div>';
         next.textContent = '';
         next.style.display = 'none';
       } else {
-        // Monday evening
         slotId = 'minoxidil';
-        title.textContent = 'Pas de minoxidil ce soir';
-        html = '<div class="now-item now-item-warn">24h post-needling — reprendre demain soir</div>';
+        title.textContent = 'Minoxidil 5%';
+        html = '<div class="now-item">Mousse Regaine sur golfes et zones de recul</div>';
+        html += '<div class="now-item">Cheveux secs · 1 noisette · masser 1 min</div>';
+        html += '<div class="now-item">Sécher 10-15 min · ne pas rincer · dormir avec</div>';
         next.textContent = '';
         next.style.display = 'none';
       }
@@ -1196,8 +1180,8 @@
     ],
     hair: [
       { id: 'regaine', name: 'Regaine 5% mousse', url: 'https://www.vitadrogerie.ch/fr/regaine-schaum-5-manner-3-x-60ml.html', price: 140.00, units: 90, perDay: 0.71, unit: 'jours', note: '~5j/7' },
-      { id: 'nizoral', name: 'Nizoral 1%', url: 'https://www.fruugoschweiz.com/shampooing-nizoral-shampooing-antipelliculaire-shampooing-doux-et-lisse-pour-cheveux-nettoie-en-profondeur/p-443048985-930103070?language=fr', price: 25.95, units: 90, perDay: 0.43, unit: 'jours', note: '3x/sem' },
-      { id: 'ducray', name: 'Ducray Anaphase+', url: 'https://www.coopvitality.ch/de/p/ducray-anaphase-chronic-shampoo-bei-haarausfall-tb-200-ml-1003886', price: 22.90, units: 90, perDay: 0.57, unit: 'jours', note: '4x/sem' },
+      { id: 'nizoral', name: 'Nizoral 2%', url: 'https://www.fruugoschweiz.com/shampooing-nizoral-shampooing-antipelliculaire-shampooing-doux-et-lisse-pour-cheveux-nettoie-en-profondeur/p-443048985-930103070?language=fr', price: 25.95, units: 90, perDay: 0.43, unit: 'jours', note: '3x/sem soir' },
+      { id: 'ducray', name: 'Ducray Anaphase+', url: 'https://www.coopvitality.ch/de/p/ducray-anaphase-chronic-shampoo-bei-haarausfall-tb-200-ml-1003886', price: 22.90, units: 90, perDay: 1, unit: 'jours', note: 'Tous les matins' },
       { id: 'roller', name: 'Dermaroller 1.0mm', url: 'https://www.stayhealthy.ch/derma-roller-mikro-nadelroller', price: 24.50, units: 7, perDay: 0.14, unit: 'utilisations', note: 'Remplacer toutes les 7 utilisations' },
       { id: 'alcool', name: 'Alcool isopropylique 1L', url: 'https://www.galaxus.ch/fr/s6/product/haenseler-alcool-isopropylique-70-1000-ml-desinfectant-58151271', price: 12.00, units: 365, perDay: 0.14, unit: 'jours', note: '~1 an' }
     ]

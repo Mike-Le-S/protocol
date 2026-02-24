@@ -539,6 +539,13 @@
 
 <div id="banner-hair-day" class="banner banner-sky"></div>
 
+<div id="now-hair" class="now-card" style="border-color: rgba(108,180,255,0.15); background: rgba(108,180,255,0.05);">
+  <div class="now-label" style="color: var(--sky);">Maintenant</div>
+  <div class="now-title" id="now-hair-title"></div>
+  <div class="now-items" id="now-hair-items"></div>
+  <div class="now-next" id="now-hair-next"></div>
+</div>
+
 <!-- ══════════ DOUCHE ══════════ -->
 <div class="block">
   <div class="block-head">
@@ -925,6 +932,81 @@
   // Highlight today in weekly table
   var todayCells = document.querySelectorAll('[data-dow="' + dow + '"]');
   todayCells.forEach(function(cell) { cell.classList.add('today-col'); });
+
+  // ══════════ CHEVEUX — NOW CARD ══════════
+  var hairHour = new Date().getHours();
+
+  function renderNowHair() {
+    var title = document.getElementById('now-hair-title');
+    var items = document.getElementById('now-hair-items');
+    var next = document.getElementById('now-hair-next');
+    var html = '';
+    var slotId = '';
+
+    if (hairHour >= 4 && hairHour <= 4) {
+      // Morning: rosemary massage
+      slotId = 'rosemary';
+      title.textContent = 'Massage romarin';
+      html = '<div class="now-item">3-5 gouttes huile de romarin dans huile de jojoba</div>';
+      html += '<div class="now-item">Masser 5 min sur les zones de recul</div>';
+      next.textContent = 'Prochain : shampoing à la douche du fit';
+    } else if (hairHour >= 5 && hairHour <= 7) {
+      // Gym shower
+      slotId = 'shower';
+      if (isNizoral) {
+        title.textContent = 'Nizoral 1%';
+        html = '<div class="now-item">Laisser poser 3-5 min, rincer</div>';
+      } else {
+        title.textContent = 'Shampoing doux';
+        html = '<div class="now-item">Sans SLS — Ducray Anaphase+ ou Bioderma Nodé</div>';
+      }
+      next.textContent = minoxTonight ? 'Prochain : minoxidil ce soir' : 'Pas de minoxidil ce soir';
+    } else if (hairHour >= 8 && hairHour <= 20) {
+      // Idle
+      slotId = 'idle';
+      title.textContent = 'Rien pour le moment';
+      if (minoxTonight) {
+        next.textContent = 'Prochaine étape : minoxidil ce soir';
+      } else if (isSunday) {
+        next.textContent = 'Ce soir : microneedling (pas de minoxidil)';
+      } else {
+        next.textContent = 'Pas de minoxidil ce soir — 24h post-needling';
+      }
+    } else {
+      // Evening / night (21-3)
+      if (isSunday) {
+        slotId = 'needling';
+        title.textContent = 'Microneedling';
+        html = '<div class="now-item">Cuir chevelu propre et sec</div>';
+        html += '<div class="now-item">Stériliser dermaroller 1,0 mm (alcool 70%)</div>';
+        html += '<div class="now-item">Rouler pression légère — 4-6 passes par direction</div>';
+        html += '<div class="now-item">Viser rougeur uniforme, pas de saignement</div>';
+        html += '<div class="now-item">Stériliser à nouveau, ranger</div>';
+        html += '<div class="now-item now-item-warn">PAS de minoxidil ce soir</div>';
+        next.textContent = 'Reprendre le minoxidil mardi soir';
+      } else if (minoxTonight) {
+        slotId = 'minoxidil';
+        title.textContent = 'Minoxidil 5%';
+        html = '<div class="now-item">Mousse Regaine sur golfes et zones de recul</div>';
+        html += '<div class="now-item">1 noisette, masser 1 min</div>';
+        html += '<div class="now-item">Sécher 10-15 min · ne pas rincer · dormir avec</div>';
+        next.textContent = '';
+        next.style.display = 'none';
+      } else {
+        // Monday evening
+        slotId = 'minoxidil';
+        title.textContent = 'Pas de minoxidil ce soir';
+        html = '<div class="now-item now-item-warn">24h post-needling — reprendre demain soir</div>';
+        next.textContent = '';
+        next.style.display = 'none';
+      }
+    }
+
+    items.innerHTML = html;
+    window.currentHairSlot = slotId;
+  }
+
+  renderNowHair();
 })();
 </script>
 </body>

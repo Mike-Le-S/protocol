@@ -288,6 +288,13 @@
   <strong>Week-end</strong> — pas de Boron aujourd'hui
 </div>
 
+<div id="now-nutrition" class="now-card">
+  <div class="now-label">Maintenant</div>
+  <div class="now-title" id="now-nutri-title"></div>
+  <div class="now-items" id="now-nutri-items"></div>
+  <div class="now-next" id="now-nutri-next"></div>
+</div>
+
 <!-- ══════════ 4h30 — RÉVEIL ══════════ -->
 <div class="block">
   <div class="block-head">
@@ -795,6 +802,71 @@
     var v = document.getElementById('start-date').value;
     if (v) { localStorage.setItem('ashwa_start', v); runAshwa(new Date(v)); document.getElementById('settings').classList.remove('show'); }
   };
+
+  // ══════════ NUTRITION — NOW CARD ══════════
+  var hour = today.getHours();
+
+  // Store ashwa status for Now Card (need to check if supp-ashwa is hidden)
+  var ashwaIsOn = !document.getElementById('supp-ashwa').classList.contains('supp-hidden');
+
+  var nutriSlots = [
+    { start: 4, end: 4, id: 'preworkout', title: 'Pré-workout', items: ['Café noir', '1 banane moyenne', "1 cuillère d'huile d'olive"], supps: [], next: 'Prochain : entraînement à 5h00' },
+    { start: 5, end: 5, id: 'training', title: 'Entraînement PPL', items: ["1 pastille d'électrolytes", '1 scoop EAA'], supps: [], next: 'Prochain : shake post-workout ~6h30' },
+    { start: 6, end: 11, id: 'postworkout', title: 'Shake post-workout', items: ['1 scoop whey ON Gold Standard (30g)', "50g flocons d'avoine en poudre", 'Créatine monohydrate (5g)', 'Collagène Collamin (10g)'], supps: [], next: 'Prochain : déjeuner vers 12h00' },
+    { start: 12, end: 14, id: 'lunch', title: 'Déjeuner', items: ['200g blanc de poulet (mariné)', 'Pas de féculent', '200g chou-fleur'], supps: [], next: 'Prochain : snack' },
+    { start: 15, end: 18, id: 'snack', title: 'Snack', items: ['2 oeufs'], supps: [], next: 'Prochain : dîner vers 19h00' },
+    { start: 19, end: 21, id: 'dinner', title: 'Dîner', items: ['200g entrecôte (marinée)', '60g riz / pâtes / ebly (cru)', '150g légumes variés'], supps: ['Zinc 14mg', 'Magnésium Glycinate 400mg'], next: 'Prochain : sommeil à 22h00' },
+    { start: 22, end: 3, id: 'sleep', title: 'Sommeil · 7-8h min', items: [], supps: [], next: '' }
+  ];
+
+  // Add dynamic supps
+  nutriSlots[0].supps = [
+    ashwaIsOn ? 'Ashwagandha KSM-66 600mg' : null,
+    'Oméga 3 ESN x3',
+    'Vitamine D3 (4 gouttes)',
+    'Saw Palmetto 320mg',
+    'Vitamine C 300mg'
+  ].filter(Boolean);
+
+  if (!isWE) nutriSlots[5].supps.unshift('Boron 6mg');
+
+  function getNutriSlot(h) {
+    for (var i = 0; i < nutriSlots.length; i++) {
+      var s = nutriSlots[i];
+      if (s.start <= s.end) {
+        if (h >= s.start && h <= s.end) return s;
+      } else {
+        if (h >= s.start || h <= s.end) return s;
+      }
+    }
+    return nutriSlots[nutriSlots.length - 1];
+  }
+
+  var currentNutriSlot = getNutriSlot(hour);
+
+  var nutriTitle = document.getElementById('now-nutri-title');
+  var nutriItems = document.getElementById('now-nutri-items');
+  var nutriNext = document.getElementById('now-nutri-next');
+
+  nutriTitle.textContent = currentNutriSlot.title;
+
+  var html = '';
+  currentNutriSlot.items.forEach(function(item) {
+    html += '<div class="now-item">' + item + '</div>';
+  });
+  currentNutriSlot.supps.forEach(function(supp) {
+    html += '<div class="now-item now-item-supp">' + supp + '</div>';
+  });
+  nutriItems.innerHTML = html;
+
+  if (currentNutriSlot.next) {
+    nutriNext.textContent = currentNutriSlot.next;
+  } else {
+    nutriNext.style.display = 'none';
+  }
+
+  window.currentNutriSlot = currentNutriSlot;
+  window.currentHour = hour;
 
   // ══════════ CHEVEUX — DYNAMIC DAY ══════════
   var dayNames = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];

@@ -250,6 +250,101 @@
   padding: 0 28px 20px;
 }
 
+/* ══════════ STOCK TRACKER ══════════ */
+.stock-section { margin: 24px 28px 0; }
+.stock-card {
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  margin-bottom: 8px;
+}
+.stock-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.stock-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--white);
+  flex: 1;
+}
+.stock-name a {
+  color: var(--white);
+  text-decoration: none;
+}
+.stock-name a:active { opacity: 0.6; }
+.stock-price {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.stock-bar-wrap {
+  margin-top: 8px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line);
+  overflow: hidden;
+}
+.stock-bar {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+.stock-bar.bar-ok { background: var(--lime); }
+.stock-bar.bar-warn { background: var(--peach); }
+.stock-bar.bar-low { background: var(--rose); }
+.stock-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+.stock-info {
+  font-size: 11px;
+  color: var(--muted);
+}
+.stock-info.stock-low { color: var(--rose); font-weight: 600; }
+.stock-info.stock-warn { color: var(--peach); }
+.stock-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--lime);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.stock-btn:active { opacity: 0.5; }
+.stock-total {
+  margin: 16px 28px 0;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.stock-total-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.stock-total-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--lime);
+}
+
   @supports (padding-top: env(safe-area-inset-top)) {
     header { padding-top: calc(env(safe-area-inset-top) + 28px); }
     body { padding-bottom: calc(env(safe-area-inset-bottom) + 60px); }
@@ -506,15 +601,12 @@
   </div>
 </div>
 
-<!-- ══════════ COMMANDER ══════════ -->
-<div class="links">
-  <a href="https://www.fr.nu3.ch/products/nu3-ashwagandha-bio" target="_blank" class="link-card lc-am">
-    <div class="link-info">
-      <h4>Ashwagandha KSM-66 Bio</h4>
-      <p>nu3.ch · 120 gélules · 60 jours</p>
-    </div>
-    <div class="link-price">27.95 CHF →</div>
-  </a>
+<!-- ══════════ SHOP & STOCK ══════════ -->
+<div class="notes-head">Shop & Stock</div>
+<div class="stock-section" id="stock-nutrition"></div>
+<div class="stock-total">
+  <div class="stock-total-label">Coût mensuel nutrition</div>
+  <div class="stock-total-value" id="cost-nutrition">–</div>
 </div>
 
 <!-- ══════════ NOTES ══════════ -->
@@ -758,10 +850,12 @@
   <strong style="color: var(--rose);">Zéro changement après 6 mois</strong> — RDV dermato pour passer au Tier 3 (finastéride topique).
 </div>
 
-<!-- ══════════ BUDGET ══════════ -->
-<div class="budget-card">
-  <div class="budget-label">Budget mensuel</div>
-  <div class="budget-value">~80-95 CHF</div>
+<!-- ══════════ SHOP & STOCK ══════════ -->
+<div class="notes-head">Shop & Stock</div>
+<div class="stock-section" id="stock-hair"></div>
+<div class="stock-total">
+  <div class="stock-total-label">Coût mensuel cheveux</div>
+  <div class="stock-total-value" id="cost-hair">–</div>
 </div>
 
 <div class="note" style="margin-top: 24px; border-color: rgba(200,251,69,0.15); background: var(--lime10);">
@@ -1082,6 +1176,103 @@
     if (curHairHead) curHairHead.classList.add('open');
     if (curHairBody) curHairBody.classList.add('open');
   }
+
+  // ══════════ STOCK TRACKER ══════════
+  var products = {
+    nutrition: [
+      { id: 'ashwa', name: 'Ashwagandha KSM-66', url: 'https://www.fr.nu3.ch/products/nu3-ashwagandha-bio', price: 27.95, units: 120, perDay: 2, unit: 'caps', note: 'Cycle 8/2 sem' },
+      { id: 'omega3', name: 'ESN Oméga 3', url: 'https://www.galaxus.ch/fr/s6/product/esn-omega-3-300-pcs-capsules-420-g-vitamines-complements-alimentaires-16628663', price: 67.20, units: 300, perDay: 3, unit: 'caps' },
+      { id: 'vitd', name: 'Vitamine D3', url: 'https://www.galaxus.ch/fr/s6/product/pure-encapsulations-vitamine-d3-1-pcs-gouttes-vitamines-complements-alimentaires-17543276', price: 16.90, units: 180, perDay: 1, unit: 'doses', note: '4 gouttes = 1 dose' },
+      { id: 'sawpalm', name: 'Saw Palmetto 320mg', url: 'https://makeup.ch/product/499525/', price: 27.90, units: 90, perDay: 1, unit: 'caps' },
+      { id: 'vitc', name: 'Vitamine C', url: 'https://www.galaxus.ch/fr/s6/product/pure-encapsulations-vitamine-c-90-pcs-capsules-vitamines-complements-alimentaires-15755978', price: 25.90, units: 90, perDay: 1, unit: 'caps' },
+      { id: 'zinc', name: 'Zinc Burgerstein', url: 'https://www.galaxus.ch/fr/s6/product/burgerstein-zinc-vital-100-pcs-cachets-40-g-vitamines-complements-alimentaires-723650', price: 35.00, units: 100, perDay: 1, unit: 'caps' },
+      { id: 'mag', name: 'Magnésium Glycinate', url: 'https://www.galaxus.ch/fr/s6/product/pure-encapsulations-gelule-de-glycinate-de-magnesium-180-pcs-capsules-262-g-vitamines-complements-al-15755969', price: 61.90, units: 180, perDay: 2, unit: 'caps' },
+      { id: 'boron', name: 'Boron 3mg NOW Foods', url: 'https://makeup.ch/product/485368/', price: 15.00, units: 100, perDay: 0.71, unit: 'caps', note: '5j/7' },
+      { id: 'creatine', name: 'Créatine ON', url: 'https://www.galaxus.ch/fr/s6/product/optimum-nutrition-creatine-powder-1-pcs-poudre-317-g-vitamines-complements-alimentaires-6349485', price: 35.70, units: 127, perDay: 1, unit: 'portions' },
+      { id: 'collagen', name: 'Collamin Collagène', url: 'https://www.galaxus.ch/fr/s6/product/collamin-naturactive-collagene-peptide-poudre-450-g-vitamines-complements-alimentaires-21411362', price: 35.00, units: 45, perDay: 1, unit: 'portions' },
+      { id: 'whey', name: 'Whey Gold Standard', url: 'https://www.galaxus.ch/fr/s7/product/optimum-nutrition-100-whey-gold-standard-double-rich-chocolate-1-x-2260-g-poudre-de-proteine-16011663', price: 72.90, units: 75, perDay: 1, unit: 'portions' },
+      { id: 'eaa', name: 'EAA Body Attack', url: 'https://www.galaxus.ch/fr/s7/product/body-attack-extreme-instant-eaa-citron-1-x-500-g-poudre-de-proteine-11227437', price: 43.00, units: 50, perDay: 1, unit: 'portions' },
+      { id: 'electro', name: 'Sponser Electrolytes', url: 'https://www.galaxus.ch/fr/s7/product/sponser-electrolytes-citron-1-x-boisson-pour-le-sport-9854623', price: 5.30, units: 12, perDay: 1, unit: 'pastilles' }
+    ],
+    hair: [
+      { id: 'regaine', name: 'Regaine 5% mousse', url: 'https://www.vitadrogerie.ch/fr/regaine-schaum-5-manner-3-x-60ml.html', price: 140.00, units: 90, perDay: 0.71, unit: 'jours', note: '~5j/7' },
+      { id: 'nizoral', name: 'Nizoral 1%', url: 'https://www.fruugoschweiz.com/shampooing-nizoral-shampooing-antipelliculaire-shampooing-doux-et-lisse-pour-cheveux-nettoie-en-profondeur/p-443048985-930103070?language=fr', price: 25.95, units: 90, perDay: 0.43, unit: 'jours', note: '3x/sem' },
+      { id: 'ducray', name: 'Ducray Anaphase+', url: 'https://www.coopvitality.ch/de/p/ducray-anaphase-chronic-shampoo-bei-haarausfall-tb-200-ml-1003886', price: 22.90, units: 90, perDay: 0.57, unit: 'jours', note: '4x/sem' },
+      { id: 'roller', name: 'Dermaroller 1.0mm', url: 'https://www.stayhealthy.ch/derma-roller-mikro-nadelroller', price: 24.50, units: 7, perDay: 0.14, unit: 'utilisations', note: 'Remplacer toutes les 7 utilisations' },
+      { id: 'alcool', name: 'Alcool isopropylique 1L', url: 'https://www.galaxus.ch/fr/s6/product/haenseler-alcool-isopropylique-70-1000-ml-desinfectant-58151271', price: 12.00, units: 365, perDay: 0.14, unit: 'jours', note: '~1 an' }
+    ]
+  };
+
+  function renderStock(tab) {
+    var container = document.getElementById('stock-' + tab);
+    var items = products[tab];
+    var totalMonthly = 0;
+    var html = '';
+
+    items.forEach(function(p) {
+      var storageKey = 'stock_' + p.id;
+      var stored = JSON.parse(localStorage.getItem(storageKey) || 'null');
+      var daysTotal = Math.floor(p.units / p.perDay);
+      var monthlyPrice = (p.price / daysTotal) * 30;
+      totalMonthly += monthlyPrice;
+
+      var daysLeft = daysTotal;
+      var pct = 100;
+      var statusText = 'Tap "Racheté" pour commencer le suivi';
+      var statusClass = '';
+      var barClass = 'bar-ok';
+
+      if (stored) {
+        var elapsed = Math.floor((Date.now() - stored.date) / 864e5);
+        var used = Math.floor(elapsed * p.perDay);
+        var remaining = Math.max(0, stored.qty - used);
+        daysLeft = Math.max(0, Math.floor(remaining / p.perDay));
+        pct = Math.min(100, Math.max(0, Math.floor((remaining / p.units) * 100)));
+
+        if (daysLeft <= 0) {
+          statusText = 'Épuisé — racheter !';
+          statusClass = 'stock-low';
+          barClass = 'bar-low';
+        } else if (daysLeft <= 7) {
+          statusText = daysLeft + 'j restants — commander bientôt';
+          statusClass = 'stock-low';
+          barClass = 'bar-low';
+        } else if (daysLeft <= 14) {
+          statusText = daysLeft + 'j restants';
+          statusClass = 'stock-warn';
+          barClass = 'bar-warn';
+        } else {
+          statusText = daysLeft + 'j restants (~' + Math.floor(daysLeft / 7) + ' sem)';
+          statusClass = '';
+          barClass = 'bar-ok';
+        }
+      }
+
+      html += '<div class="stock-card" data-product="' + p.id + '">';
+      html += '<div class="stock-top">';
+      html += '<div class="stock-name"><a href="' + p.url + '" target="_blank">' + p.name + ' →</a></div>';
+      html += '<div class="stock-price">' + p.price.toFixed(2) + ' CHF</div>';
+      html += '</div>';
+      html += '<div class="stock-bar-wrap"><div class="stock-bar ' + barClass + '" style="width:' + pct + '%"></div></div>';
+      html += '<div class="stock-bottom">';
+      html += '<div class="stock-info ' + statusClass + '">' + statusText + '</div>';
+      html += '<button class="stock-btn" onclick="stockRefill(\'' + p.id + '\',\'' + tab + '\',' + p.units + ')">Racheté</button>';
+      html += '</div>';
+      html += '</div>';
+    });
+
+    container.innerHTML = html;
+    document.getElementById('cost-' + tab).textContent = '~' + Math.round(totalMonthly) + ' CHF';
+  }
+
+  window.stockRefill = function(id, tab, units) {
+    var storageKey = 'stock_' + id;
+    localStorage.setItem(storageKey, JSON.stringify({ date: Date.now(), qty: units }));
+    renderStock(tab);
+  };
+
+  renderStock('nutrition');
+  renderStock('hair');
 })();
 </script>
 </body>

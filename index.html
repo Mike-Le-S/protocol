@@ -424,7 +424,7 @@
       <span class="supp-detail">↓ DHT · santé prostate · ↑ testo libre</span>
     </div>
   </div>
-  <div class="macros" style="padding-left: 0;">
+  <div id="macros-preworkout" class="macros" style="padding-left: 0;">
     <span class="tag t-k">225 kcal</span>
     <span class="tag t-p">1 P</span>
     <span class="tag t-g">27 G</span>
@@ -470,7 +470,7 @@
       <span class="supp-detail">ESN · Immunité · antioxydant · cofacteur collagène</span>
     </div>
   </div>
-  <div class="macros" style="padding-left: 0;">
+  <div id="macros-postworkout" class="macros" style="padding-left: 0;">
     <span class="tag t-k">330 kcal</span>
     <span class="tag t-p">41 P</span>
     <span class="tag t-g">35 G</span>
@@ -918,6 +918,9 @@
     if (bananeEl) bananeEl.classList.add('supp-hidden');
     if (floconsEl) floconsEl.classList.add('supp-hidden');
     document.getElementById('banner-sunday').classList.add('show');
+    // Macros dimanche : sans banane (-100kcal, -1P, -27G) et sans flocons (-180kcal, -6P, -35G, -3L)
+    document.getElementById('macros-preworkout').innerHTML = '<span class="tag t-k">125 kcal</span><span class="tag t-p">0 P</span><span class="tag t-g">0 G</span><span class="tag t-l">14 L</span>';
+    document.getElementById('macros-postworkout').innerHTML = '<span class="tag t-k">150 kcal</span><span class="tag t-p">35 P</span><span class="tag t-g">0 G</span><span class="tag t-l">1 L</span>';
   }
 
   var stored = localStorage.getItem('ashwa_start');

@@ -444,8 +444,8 @@
 <div class="collapsible-body" data-slot="training">
   <div class="collapsible-body-inner">
   <div class="items" style="padding-left: 0;">
-    <div class="item">1 pastille d'électrolytes (intra)</div>
-    <div class="item">1 scoop EAA (intra)</div>
+    <div class="item">1 dose nu3 Electrolytes (intra)</div>
+    <div class="item">1 scoop EAA AlpenPower (intra)</div>
   </div>
   </div>
 </div>
@@ -461,13 +461,13 @@
 <div class="collapsible-body" data-slot="postworkout">
   <div class="collapsible-body-inner">
   <div class="items" style="padding-left: 0;">
-    <div class="item">1 scoop whey ON Gold Standard (30 g)</div>
+    <div class="item">1 scoop whey Nutripure Isolate Native (30 g)</div>
     <div id="item-flocons" class="item">50 g flocons d'avoine en poudre</div>
-    <div class="item">Créatine monohydrate (5 g)</div>
+    <div class="item">Créatine Creapure (5 g)</div>
     <div class="item">Collagène Collamin (10 g)</div>
     <div class="item-supp">
-      Vitamine C (300 mg)
-      <span class="supp-detail">ESN · Immunité · antioxydant · cofacteur collagène</span>
+      Vitamine C (1000 mg)
+      <span class="supp-detail">NOW Foods C-1000 · Immunité · antioxydant · cofacteur collagène</span>
     </div>
   </div>
   <div id="macros-postworkout" class="macros" style="padding-left: 0;">
@@ -972,8 +972,8 @@
 
   var nutriSlots = [
     { start: 4, end: 4, id: 'preworkout', title: 'Pré-workout', items: isSundayRest ? ['Café noir', "1 cuillère d'huile d'olive"] : ['Café noir', '1 banane moyenne', "1 cuillère d'huile d'olive"], supps: [], next: 'Prochain : entraînement à 5h00' },
-    { start: 5, end: 5, id: 'training', title: 'Entraînement PPL', items: ["1 pastille d'électrolytes", '1 scoop EAA'], supps: [], next: 'Prochain : shake post-workout ~6h30' },
-    { start: 6, end: 11, id: 'postworkout', title: 'Shake post-workout', items: isSundayRest ? ['1 scoop whey ON Gold Standard (30g)', 'Créatine monohydrate (5g)', 'Collagène Collamin (10g)'] : ['1 scoop whey ON Gold Standard (30g)', "50g flocons d'avoine en poudre", 'Créatine monohydrate (5g)', 'Collagène Collamin (10g)'], supps: ['Vitamine C 300mg'], next: 'Prochain : déjeuner vers 12h00' },
+    { start: 5, end: 5, id: 'training', title: 'Entraînement PPL', items: ["1 dose nu3 Electrolytes", '1 scoop EAA AlpenPower'], supps: [], next: 'Prochain : shake post-workout ~6h30' },
+    { start: 6, end: 11, id: 'postworkout', title: 'Shake post-workout', items: isSundayRest ? ['1 scoop whey Nutripure Isolate Native (30g)', 'Créatine Creapure (5g)', 'Collagène Collamin (10g)'] : ['1 scoop whey Nutripure Isolate Native (30g)', "50g flocons d'avoine en poudre", 'Créatine Creapure (5g)', 'Collagène Collamin (10g)'], supps: ['Vitamine C 1000mg'], next: 'Prochain : déjeuner vers 12h00' },
     { start: 12, end: 14, id: 'lunch', title: 'Déjeuner', items: ['200g blanc de poulet (mariné)', 'Pas de féculent', '200g chou-fleur'], supps: [], next: 'Prochain : snack' },
     { start: 15, end: 18, id: 'snack', title: 'Snack', items: ['2 oeufs'], supps: [], next: 'Prochain : dîner vers 19h00' },
     { start: 19, end: 21, id: 'dinner', title: 'Dîner', items: ['200g entrecôte (marinée)', '60g riz / pâtes / ebly (cru)', '150g légumes variés'], supps: ['Zinc 14mg', 'Magnésium Glycinate 400mg'], next: 'Prochain : sommeil à 22h00' },
@@ -1183,15 +1183,15 @@
       { id: 'omega3', name: 'ESN Oméga 3', url: 'https://www.galaxus.ch/fr/s6/product/esn-omega-3-300-pcs-capsules-420-g-vitamines-complements-alimentaires-16628663', price: 67.20, units: 300, perDay: 3, unit: 'caps' },
       { id: 'vitd', name: 'Vitamine D3', url: 'https://www.galaxus.ch/fr/s6/product/pure-encapsulations-vitamine-d3-1-pcs-gouttes-vitamines-complements-alimentaires-17543276', price: 16.90, units: 180, perDay: 1, unit: 'doses', note: '4 gouttes = 1 dose' },
       { id: 'sawpalm', name: 'Saw Palmetto 320mg', url: 'https://makeup.ch/product/499525/', price: 27.90, units: 90, perDay: 1, unit: 'caps' },
-      { id: 'vitc', name: 'Vitamine C', url: 'https://www.galaxus.ch/fr/s6/product/pure-encapsulations-vitamine-c-90-pcs-capsules-vitamines-complements-alimentaires-15755978', price: 25.90, units: 90, perDay: 2, unit: 'caps' },
+      { id: 'vitc', name: 'Vitamine C NOW Foods', url: 'https://kosport.ch/shop/en/vitamins-minerals/now-foods-c-1000-100-caps', price: 14.90, units: 100, perDay: 1, unit: 'caps', note: '1000mg/cap' },
       { id: 'zinc', name: 'Zinc Burgerstein', url: 'https://www.galaxus.ch/fr/s6/product/burgerstein-zinc-vital-100-pcs-cachets-40-g-vitamines-complements-alimentaires-723650', price: 35.00, units: 100, perDay: 1, unit: 'caps' },
       { id: 'mag', name: 'Magnésium Glycinate', url: 'https://www.galaxus.ch/fr/s6/product/pure-encapsulations-gelule-de-glycinate-de-magnesium-180-pcs-capsules-262-g-vitamines-complements-al-15755969', price: 61.90, units: 180, perDay: 2, unit: 'caps' },
       { id: 'boron', name: 'Boron 3mg NOW Foods', url: 'https://makeup.ch/product/485368/', price: 15.00, units: 250, perDay: 1.43, unit: 'caps', note: '2/j, 5j/7' },
-      { id: 'creatine', name: 'Créatine ON', url: 'https://www.galaxus.ch/fr/s6/product/optimum-nutrition-creatine-powder-1-pcs-poudre-317-g-vitamines-complements-alimentaires-6349485', price: 35.70, units: 127, perDay: 1, unit: 'portions' },
+      { id: 'creatine', name: 'Créatine Lee-Sport Creapure', url: 'https://whey-protein.ch/products/creatin-monohydrat', price: 39.90, units: 300, perDay: 1, unit: 'portions', note: '1500g, 5g/j' },
       { id: 'collagen', name: 'Collamin Collagène', url: 'https://www.galaxus.ch/fr/s6/product/collamin-naturactive-collagene-peptide-poudre-450-g-vitamines-complements-alimentaires-21411362', price: 35.00, units: 45, perDay: 1, unit: 'portions' },
-      { id: 'whey', name: 'Whey Gold Standard', url: 'https://www.galaxus.ch/fr/s7/product/optimum-nutrition-100-whey-gold-standard-double-rich-chocolate-1-x-2260-g-poudre-de-proteine-16011663', price: 72.90, units: 75, perDay: 1, unit: 'portions' },
-      { id: 'eaa', name: 'EAA Body Attack', url: 'https://www.galaxus.ch/fr/s7/product/body-attack-extreme-instant-eaa-citron-1-x-500-g-poudre-de-proteine-11227437', price: 43.00, units: 50, perDay: 1, unit: 'portions' },
-      { id: 'electro', name: 'Sponser Electrolytes', url: 'https://www.galaxus.ch/fr/s7/product/sponser-electrolytes-citron-1-x-boisson-pour-le-sport-9854623', price: 5.30, units: 10, perDay: 0.86, unit: 'pastilles', note: '6x/sem (training)' }
+      { id: 'whey', name: 'Whey Nutripure Isolate Native', url: 'https://www.kdcnutrition.ch/fr/whey-isolate/2725-whey-isolate-native-2kg-nutripure.html', price: 99.90, units: 66, perDay: 1, unit: 'portions', note: '2kg, 30g/portion' },
+      { id: 'eaa', name: 'EAA AlpenPower', url: 'https://en.alpenpower.com/products/eaa-essenzielle-aminos-uren-orange-apeaa', price: 28.40, units: 33, perDay: 1, unit: 'portions', note: '500g, stevia' },
+      { id: 'electro', name: 'nu3 Electrolyte Drink', url: 'https://www.coop.ch/en/food/specific-diets/sports-nutrition-proteins/powder/nu3-electrolyte-drink/p/7291322', price: 19.95, units: 50, perDay: 0.86, unit: 'portions', note: '250g, 6x/sem' }
     ],
     hair: [
       { id: 'regaine', name: 'Regaine 5% mousse', url: 'https://www.vitadrogerie.ch/fr/regaine-schaum-5-manner-3-x-60ml.html', price: 140.00, units: 90, perDay: 0.71, unit: 'jours', note: '~5j/7' },

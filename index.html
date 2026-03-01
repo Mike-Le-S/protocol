@@ -382,6 +382,9 @@
 <div id="banner-weekend" class="banner banner-info">
   <strong>Week-end</strong> — pas de Boron aujourd'hui
 </div>
+<div id="banner-sunday" class="banner banner-info" style="display:none;">
+  <strong>Dimanche repos</strong> — pas de banane ni flocons d'avoine
+</div>
 
 <div id="now-nutrition" class="now-card">
   <div class="now-label">Maintenant</div>
@@ -402,7 +405,7 @@
   <div class="collapsible-body-inner">
   <div class="items" style="padding-left: 0;">
     <div class="item">Café noir</div>
-    <div class="item">1 banane moyenne</div>
+    <div id="item-banane" class="item">1 banane moyenne</div>
     <div class="item">1 cuillère d'huile d'olive</div>
     <div id="supp-ashwa" class="item-supp">
       2x Ashwagandha KSM-66 (600 mg)
@@ -419,10 +422,6 @@
     <div class="item-supp">
       Saw Palmetto (320 mg)
       <span class="supp-detail">↓ DHT · santé prostate · ↑ testo libre</span>
-    </div>
-    <div class="item-supp">
-      Vitamine C (300 mg)
-      <span class="supp-detail">ESN · Immunité · antioxydant</span>
     </div>
   </div>
   <div class="macros" style="padding-left: 0;">
@@ -463,9 +462,13 @@
   <div class="collapsible-body-inner">
   <div class="items" style="padding-left: 0;">
     <div class="item">1 scoop whey ON Gold Standard (30 g)</div>
-    <div class="item">50 g flocons d'avoine en poudre</div>
+    <div id="item-flocons" class="item">50 g flocons d'avoine en poudre</div>
     <div class="item">Créatine monohydrate (5 g)</div>
     <div class="item">Collagène Collamin (10 g)</div>
+    <div class="item-supp">
+      Vitamine C (300 mg)
+      <span class="supp-detail">ESN · Immunité · antioxydant · cofacteur collagène</span>
+    </div>
   </div>
   <div class="macros" style="padding-left: 0;">
     <span class="tag t-k">330 kcal</span>
@@ -907,6 +910,16 @@
     boronBadge.className = 'cycle-badge cb-on';
   }
 
+  // Dimanche repos : pas de banane ni flocons d'avoine
+  var isSundayRest = (dow === 0);
+  if (isSundayRest) {
+    var bananeEl = document.getElementById('item-banane');
+    var floconsEl = document.getElementById('item-flocons');
+    if (bananeEl) bananeEl.classList.add('supp-hidden');
+    if (floconsEl) floconsEl.classList.add('supp-hidden');
+    document.getElementById('banner-sunday').classList.add('show');
+  }
+
   var stored = localStorage.getItem('ashwa_start');
   var startInput = document.getElementById('start-date');
   if (stored) {
@@ -955,9 +968,9 @@
   var ashwaIsOn = !document.getElementById('supp-ashwa').classList.contains('supp-hidden');
 
   var nutriSlots = [
-    { start: 4, end: 4, id: 'preworkout', title: 'Pré-workout', items: ['Café noir', '1 banane moyenne', "1 cuillère d'huile d'olive"], supps: [], next: 'Prochain : entraînement à 5h00' },
+    { start: 4, end: 4, id: 'preworkout', title: 'Pré-workout', items: isSundayRest ? ['Café noir', "1 cuillère d'huile d'olive"] : ['Café noir', '1 banane moyenne', "1 cuillère d'huile d'olive"], supps: [], next: 'Prochain : entraînement à 5h00' },
     { start: 5, end: 5, id: 'training', title: 'Entraînement PPL', items: ["1 pastille d'électrolytes", '1 scoop EAA'], supps: [], next: 'Prochain : shake post-workout ~6h30' },
-    { start: 6, end: 11, id: 'postworkout', title: 'Shake post-workout', items: ['1 scoop whey ON Gold Standard (30g)', "50g flocons d'avoine en poudre", 'Créatine monohydrate (5g)', 'Collagène Collamin (10g)'], supps: [], next: 'Prochain : déjeuner vers 12h00' },
+    { start: 6, end: 11, id: 'postworkout', title: 'Shake post-workout', items: isSundayRest ? ['1 scoop whey ON Gold Standard (30g)', 'Créatine monohydrate (5g)', 'Collagène Collamin (10g)'] : ['1 scoop whey ON Gold Standard (30g)', "50g flocons d'avoine en poudre", 'Créatine monohydrate (5g)', 'Collagène Collamin (10g)'], supps: ['Vitamine C 300mg'], next: 'Prochain : déjeuner vers 12h00' },
     { start: 12, end: 14, id: 'lunch', title: 'Déjeuner', items: ['200g blanc de poulet (mariné)', 'Pas de féculent', '200g chou-fleur'], supps: [], next: 'Prochain : snack' },
     { start: 15, end: 18, id: 'snack', title: 'Snack', items: ['2 oeufs'], supps: [], next: 'Prochain : dîner vers 19h00' },
     { start: 19, end: 21, id: 'dinner', title: 'Dîner', items: ['200g entrecôte (marinée)', '60g riz / pâtes / ebly (cru)', '150g légumes variés'], supps: ['Zinc 14mg', 'Magnésium Glycinate 400mg'], next: 'Prochain : sommeil à 22h00' },
@@ -969,8 +982,7 @@
     ashwaIsOn ? 'Ashwagandha KSM-66 600mg' : null,
     'Oméga 3 ESN x3',
     'Vitamine D3 (4 gouttes)',
-    'Saw Palmetto 320mg',
-    'Vitamine C 300mg'
+    'Saw Palmetto 320mg'
   ].filter(Boolean);
 
   if (!isWE) nutriSlots[5].supps.unshift('Boron 6mg');
